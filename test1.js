@@ -1,3 +1,4 @@
+import * as d3 from "d3";
 // =============================================
 // Константы для типов клеток и их размера
 // =============================================
@@ -123,7 +124,21 @@ function RunCellularAutomata(_map_width, _map_height, _spawn_chance, _create_lim
     for (let i = 0; i < _iterations; i++) {
         _ca_map = Iterations(_ca_map, _create_limit, _destroy_limit);
     }
-    
+    // 4. Используем d3
+    // Преобразуем карту в массив для d3
+    const values = [];
+    for (let y = 0; y < map_height; y++) {
+        for (let x = 0; x < map_width; x++) {
+            values.push(_ca_map[x][y]); // 0 или 1
+        }
+    }
+
+    // Генерируем контур
+    const contour = d3.contours()
+        .size([map_width, map_height])
+        (values);
+
+    console.log(contour); // Массив контурных линий
     return _ca_map;
 }
 
@@ -145,3 +160,5 @@ function DrawMap(_map) {
 // =============================================
 const cell_map = RunCellularAutomata(10, 150, 65, 5, 5, 5);
 DrawMap(cell_map);
+
+export { Gen };
