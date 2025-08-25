@@ -1,6 +1,8 @@
 # Папки зависимостей
 map_generator/
 docs/
+node_modules/
+bun.lock
 
 # Логи
 npm-debug.log
