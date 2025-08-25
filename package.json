@@ -18,7 +18,9 @@
   "bugs": {
     "url": "https://github.com/DimonZhi/-/issues"
   },
-  "homepage": "https://github.com/DimonZhi/-#readme"
+  "homepage": "https://github.com/DimonZhi/-#readme",
+  "dependencies": {
+    "bun": "^1.2.20",
+    "d3": "^7.9.0"
+  }
 }
-
-
