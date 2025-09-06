@@ -1,31 +1,64 @@
 import * as d3 from "d3";
 import { CAMapGenerator } from "./main.js";
+// 导入 ControlsManager 类（确保 control.js 路径正确）
+import { ControlsManager } from "./control.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("regenerate").addEventListener("click", refresh);
-  refresh();
+  // 1. 定义默认参数（与原代码参数保持一致，作为滑块初始值）
+  const defaultParams = {
+    gridWidth: 120,        //对应原 GRID_W
+    gridHeight: 120,       //对应原 GRID_H
+    spawnChance: 65,       //对应原 SPAWN
+    createLimit: 5,        //对应原 CREATE_LIMIT
+    destroyLimit: 5,       //对应原 DESTROY_LIMIT
+    iterations: 5,         //对应原 ITERATIONS
+    threshold: 0.5         //对应原 THRESHOLD
+  };
+
+  // 2. 初始化 ControlsManager（关键：挂载到 HTML 中的 controls-panel 容器）
+  const controlsManager = new ControlsManager(
+    "controls-panel",       //容器 ID（对应 HTML 中 id="controls-panel" 的 div）
+    defaultParams           //默认参数（滑块初始值）
+  );
+
+  // 3. 绑定「再生地图」事件（滑块调整后点击按钮生效）
+  // 绑定自定义的再生按钮（Control 内部创建的按钮）
+  controlsManager.onRegenerate(() => {
+    // 获取滑块当前参数，传入 refresh 生成地图
+    const currentParams = controlsManager.getParameters();
+    refresh(currentParams);
+  });
+
+  // 兼容原有的再生按钮（如果 HTML 中保留了 id="regenerate" 的按钮）
+  const originalRegenBtn = document.getElementById("regenerate");
+  if (originalRegenBtn) {
+    originalRegenBtn.addEventListener("click", () => {
+      const currentParams = controlsManager.getParameters();
+      refresh(currentParams);
+    });
+  }
+
+  // 4. 初始加载地图（使用默认参数）
+  refresh(defaultParams);
 });
 
-// Параметры генерации
-const GRID_W = 120;        // размер решётки для генерации контуров (не SVG!)
-const GRID_H = 120;
-const SPAWN = 65;          // шанс стены, %
-const CREATE_LIMIT = 5;
-const DESTROY_LIMIT = 5;
-const ITERATIONS = 5;
-const THRESHOLD = 0.5;     // порог для d3.contours()
-
-function refresh() {
+// 5. 核心：地图生成函数（修改参数接收方式，支持从滑块获取动态参数）
+function refresh(params) {
   const gen = new CAMapGenerator();
-  // ВАЖНО: вызываем метод, который возвращает САМИ контуры
+  // 从 params 中获取动态参数（替代原有的固定常量）
   const contours = gen.generatePoints(
-    GRID_W, GRID_H,
-    SPAWN, CREATE_LIMIT, DESTROY_LIMIT, ITERATIONS,
-    THRESHOLD
+    params.gridWidth,    //原 GRID_W
+    params.gridHeight,   //原 GRID_H
+    params.spawnChance,  //原 SPAWN
+    params.createLimit,  //原 CREATE_LIMIT
+    params.destroyLimit, //原 DESTROY_LIMIT
+    params.iterations,   //原 ITERATIONS
+    params.threshold     //原 THRESHOLD
   );
   drawMap(contours);
 }
 
+// 6. 地图绘制函数（保持原有逻辑不变）
 function drawMap(contours) {
   const width = 600;   // размеры SVG
   const height = 600;
