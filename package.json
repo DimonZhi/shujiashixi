@@ -1,0 +1,26 @@
+{
+  "name": "practise_summer25",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dima.js",
+  "scripts": {
+    "css": "npx @tailwindcss/cli -i styles.css -o output.css --watch ",
+    "build": "bun build index.html --outdir=docs",
+    "start": "bun index.html --outdir=build --sourcemap=linked"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DimonZhi/-.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DimonZhi/-/issues"
+  },
+  "homepage": "https://github.com/DimonZhi/-#readme",
+  "dependencies": {
+    "bun": "^1.2.20",
+    "d3": "^7.9.0"
+  }
+}
