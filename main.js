@@ -37,7 +37,7 @@ class CAMapGenerator {
 
     const values = new Array(W * H);
     let k = 0;
-    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) values[k++] = map[x][y]; // 0 или 1
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) values[k++] = map[x][y];
 
     const contour = d3.contours().size([W, H]).thresholds([threshold])(values);
     return contour;

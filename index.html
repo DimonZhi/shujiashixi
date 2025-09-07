@@ -1,103 +1,102 @@
 <!doctype html>
-<html>
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="./output.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <title>Map Generator</title>
-    <style>
-        .controls-container {
-            background-color: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 1rem;
-            max-width: 800px;
-            width: 100%;
-        }
-        
-        .control-group {
-            margin-bottom: 1rem;
-        }
-        
-        .control-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: #374151;
-        }
-        
-        .slider-container {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        
-        input[type="range"] {
-            flex: 1;
-            height: 6px;
-            border-radius: 3px;
-            background: #e5e7eb;
-            outline: none;
-            -webkit-appearance: none;
-        }
-        
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #3b82f6;
-            cursor: pointer;
-            transition: background 0.15s ease-in-out;
-        }
-        
-        input[type="range"]::-webkit-slider-thumb:hover {
-            background: #2563eb;
-        }
-        
-        .value-display {
-            min-width: 48px;
-            text-align: center;
-            padding: 0.25rem 0.5rem;
-            background-color: #eff6ff;
-            border-radius: 4px;
-            color: #1e40af;
-            font-weight: 600;
-            font-size: 0.875rem;
-        }
-        
-        .params-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1rem;
-        }
-        
-        .param-description {
-            font-size: 0.75rem;
-            color: #6b7280;
-            margin-top: 0.25rem;
-            font-style: italic;
-        }
-    </style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="./output.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+  <title>Map Generator</title>
+  <style>
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      height:100dvh;
+      margin:0;
+      display:grid;
+      grid-template-columns:1fr 340px;
+      grid-template-rows:auto 1fr;
+      grid-template-areas:
+        "header header"
+        "main   right";
+      gap:10px;
+      padding:10px;
+      background:#f9fafb;
+      overflow:hidden;
+    }
+    .topbar{
+      grid-area:header;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      background:#fff;
+      border:1px solid #e5e7eb;
+      border-radius:10px;
+      padding:10px 12px;
+    }
+    .title{font-size:18px;font-weight:800;margin:0;line-height:1}
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 12px;border:0;border-radius:8px;
+      background:#3b82f6;color:#fff;font-weight:600;cursor:pointer
+    }
+    .btn:active{transform:translateY(1px)}
+    .main{
+      grid-area:main;
+      display:grid;
+      grid-template-rows:auto 1fr;
+      gap:10px;
+      min-width:0;min-height:0;
+    }
+    #map-container{min-height:0}
+    #map{
+      min-height:0;height:100%;
+      display:grid;place-items:center;
+      border:1px solid #d1d5db;border-radius:10px;background:#fff;overflow:hidden
+    }
+    #map>svg{
+      display:block;max-width:100%;max-height:100%;
+      height:auto;width:auto;margin:0 auto;position:static!important;transform:none!important
+    }
+    .controls{
+      grid-area:right;
+      background:#fff;border:1px solid #e5e7eb;border-radius:10px;
+      padding:10px;height:100%;overflow:auto;min-width:0
+    }
+    .params-grid{display:grid;grid-template-columns:1fr;gap:10px}
+    .control-group{margin:0}
+    .control-group label{display:block;margin-bottom:6px;font-weight:600;color:#374151}
+    .slider-row{display:flex;align-items:center;gap:10px}
+    input[type="range"]{flex:1;height:6px;border-radius:3px;background:#e5e7eb;outline:none;-webkit-appearance:none}
+    input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#3b82f6;cursor:pointer}
+    .value{min-width:48px;text-align:center;padding:4px 8px;background:#eff6ff;border-radius:6px;color:#1e40af;font-weight:700;font-size:12px}
+    @media (max-width:900px){
+      body{
+        grid-template-columns:1fr;
+        grid-template-rows:auto minmax(0,1fr) minmax(0,38dvh);
+        grid-template-areas:
+          "header"
+          "main"
+          "right";
+      }
+    }
+  </style>
 </head>
-<body class="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4">
-    <h1 class="text-3xl font-bold mb-8">Генерация карт на SVG</h1>
-    <div class="controls-container">
-        <h2 class="text-xl font-semibold mb-4">Параметры генерации</h2>
-        <div class="params-grid" id="controls-panel">
-        </div>
-    </div>
-    
-    <div id="map-container" class="mb-4"></div>
-    <div id="map" class="my-2 border border-gray-300 rounded"></div>
-    
-    <button id="regenerate" class="px-4 mt-2 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition mb-4">
-        <i class="fa fa-refresh mr-2"></i>Создать заново
-    </button>
-    <script type="module" src="./control.js"></script>
-    <script type="module" src="index.js"></script>
+<body>
+  <div class="topbar">
+    <h1 class="title">Generating maps using cellular automata</h1>
+  </div>
+
+  <div class="main">
+    <div id="map-container"></div>
+    <div id="map"></div>
+  </div>
+
+  <aside class="controls controls-container">
+    <div class="params-grid" id="controls-panel"></div>
+  </aside>
+
+  <script type="module" src="./control.js"></script>
+  <script type="module" src="./index.js"></script>
 </body>
 </html>
-    
