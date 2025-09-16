@@ -4,9 +4,8 @@
   "description": "",
   "main": "dima.js",
   "scripts": {
-    "css": "npx @tailwindcss/cli -i styles.css -o output.css --watch ",
-    "build": "bun build index.html --outdir=docs",
-    "start": "bun index.html --outdir=build --sourcemap=linked"
+    "build": "vite build",
+    "start": "vite --host"
   },
   "repository": {
     "type": "git",
@@ -20,7 +19,9 @@
   },
   "homepage": "https://github.com/DimonZhi/-#readme",
   "dependencies": {
-    "bun": "^1.2.20",
     "d3": "^7.9.0"
+  },
+  "devDependencies": {
+    "vite": "^6.3.6"
   }
 }

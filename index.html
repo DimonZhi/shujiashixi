@@ -1,86 +1,11 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link href="./output.css" rel="stylesheet"/>
+  <link href="./style.css" rel="stylesheet"/>
   <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
   <title>Map Generator</title>
-  <style>
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      height:100dvh;
-      margin:0;
-      display:grid;
-      grid-template-columns:1fr 340px;
-      grid-template-rows:auto 1fr;
-      grid-template-areas:
-        "header header"
-        "main   right";
-      gap:10px;
-      padding:10px;
-      background:#f9fafb;
-      overflow:hidden;
-    }
-    .topbar{
-      grid-area:header;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      background:#fff;
-      border:1px solid #e5e7eb;
-      border-radius:10px;
-      padding:10px 12px;
-    }
-    .title{font-size:18px;font-weight:800;margin:0;line-height:1}
-    .btn{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:8px 12px;border:0;border-radius:8px;
-      background:#3b82f6;color:#fff;font-weight:600;cursor:pointer
-    }
-    .btn:active{transform:translateY(1px)}
-    .main{
-      grid-area:main;
-      display:grid;
-      grid-template-rows:auto 1fr;
-      gap:10px;
-      min-width:0;min-height:0;
-    }
-    #map-container{min-height:0}
-    #map{
-      min-height:0;height:100%;
-      display:grid;place-items:center;
-      border:1px solid #d1d5db;border-radius:10px;background:#fff;overflow:hidden
-    }
-    #map>svg{
-      display:block;max-width:100%;max-height:100%;
-      height:auto;width:auto;margin:0 auto;position:static!important;transform:none!important
-    }
-    .controls{
-      grid-area:right;
-      background:#fff;border:1px solid #e5e7eb;border-radius:10px;
-      padding:10px;height:100%;overflow:auto;min-width:0
-    }
-    .params-grid{display:grid;grid-template-columns:1fr;gap:10px}
-    .control-group{margin:0}
-    .control-group label{display:block;margin-bottom:6px;font-weight:600;color:#374151}
-    .slider-row{display:flex;align-items:center;gap:10px}
-    input[type="range"]{flex:1;height:6px;border-radius:3px;background:#e5e7eb;outline:none;-webkit-appearance:none}
-    input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#3b82f6;cursor:pointer}
-    .value{min-width:48px;text-align:center;padding:4px 8px;background:#eff6ff;border-radius:6px;color:#1e40af;font-weight:700;font-size:12px}
-    @media (max-width:900px){
-      body{
-        grid-template-columns:1fr;
-        grid-template-rows:auto minmax(0,1fr) minmax(0,38dvh);
-        grid-template-areas:
-          "header"
-          "main"
-          "right";
-      }
-    }
-  </style>
 </head>
 <body>
   <div class="topbar">
@@ -88,15 +13,13 @@
   </div>
 
   <div class="main">
-    <div id="map-container"></div>
     <div id="map"></div>
   </div>
 
-  <aside class="controls controls-container">
+  <aside class="controls">
     <div class="params-grid" id="controls-panel"></div>
   </aside>
 
-  <script type="module" src="./control.js"></script>
   <script type="module" src="./index.js"></script>
 </body>
 </html>

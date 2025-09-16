@@ -5,15 +5,15 @@ class ControlsManager {
         this.sliders = {};
         this.displays = {};
         this.regenerateCallback = null;
-        
+
         this.initControls();
     }
-    
+
     initControls() {
         this.container.innerHTML = '';
-        
+
         const title = document.createElement('h2');
-        
+
         const paramConfigs = [
             {
                 id: 'spawnChance',
@@ -56,26 +56,26 @@ class ControlsManager {
                 description: 'Number of cellular automata iterations'
             }
         ];
-        
+
         paramConfigs.forEach(config => {
             this.createControlGroup(config);
         });
-        
+
         this.createRegenerateButton();
     }
-    
+
     createControlGroup(config) {
         const group = document.createElement('div');
         group.className = 'control-group';
-        
+
         const label = document.createElement('label');
         label.htmlFor = config.id;
         label.textContent = config.label;
         group.appendChild(label);
-        
+
         const sliderContainer = document.createElement('div');
         sliderContainer.className = 'slider-container';
-        
+
         const slider = document.createElement('input');
         slider.type = config.type;
         slider.id = config.id;
@@ -84,69 +84,68 @@ class ControlsManager {
         slider.step = config.step;
         slider.value = this.params[config.id];
         this.sliders[config.id] = slider;
-        
+
         const valueDisplay = document.createElement('span');
         valueDisplay.className = 'value-display';
         valueDisplay.id = `${config.id}Value`;
         valueDisplay.textContent = this.params[config.id] + config.unit;
         this.displays[config.id] = { element: valueDisplay, unit: config.unit };
-        
+
         slider.addEventListener('input', () => {
             this.params[config.id] = this.parseValue(slider.value, config);
             this.updateDisplay(config.id);
         });
-        
+
         sliderContainer.appendChild(slider);
         sliderContainer.appendChild(valueDisplay);
         group.appendChild(sliderContainer);
-        
+
         if (config.description) {
             const description = document.createElement('p');
             description.className = 'param-description';
             description.textContent = config.description;
             group.appendChild(description);
         }
-        
+
         this.container.appendChild(group);
     }
-    
 
     createRegenerateButton() {
         const button = document.createElement('button');
         button.id = 'regenerate';
         button.innerHTML = '<i class="fa fa-refresh" aria-hidden="true"></i> Regenerate Map';
-        
+
         button.addEventListener('click', () => {
             if (this.regenerateCallback) {
                 this.regenerateCallback();
             }
         });
-        
+
         this.container.appendChild(button);
     }
-    
+
     parseValue(value, config) {
         if (config.step.toString().includes('.')) {
             return parseFloat(value);
         }
         return parseInt(value, 10);
     }
-    
+
     updateDisplay(paramId) {
         const display = this.displays[paramId];
         if (display) {
             display.element.textContent = this.params[paramId] + display.unit;
         }
     }
-    
+
     getParameters() {
         return { ...this.params };
     }
-    
+
     onRegenerate(callback) {
         this.regenerateCallback = callback;
     }
-    
+
     triggerRegenerate() {
         if (this.regenerateCallback) {
             this.regenerateCallback();
